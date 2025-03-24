@@ -41,18 +41,27 @@ const Resultado = styled.div`
 `
 
 function Pesquisa() {
+ 
     const [livrosPesquisados, setLivrosPesquisados] = useState([])
+    console.log(livrosPesquisados)
     return (
         <PesquisaContainer>
              <Titulo>Já sabe por onde começar?</Titulo> 
              <Subtitulo>Encontre seu livro na nossa estante.</Subtitulo>
              <Input 
-             placeholder="Escreva sua próxima leitura"
-             onBlur={evento => {
-                const textoDigitado = evento.target.value
-                const resultadoPesquisa = livros.filter( livro => livro.nome.includes(textoDigitado))
-                setLivrosPesquisados(resultadoPesquisa)
-             }}
+              placeholder="Escreva sua próxima leitura"
+              onBlur={evento => {
+                  const textoDigitado = evento.target.value.trim();
+                  
+                  if (textoDigitado === "") {
+                      setLivrosPesquisados([]); // Limpa os resultados se não houver texto digitado
+                  } else {
+                      const resultadoPesquisa = livros.filter(livro => 
+                          livro.nome.toLowerCase().includes(textoDigitado.toLowerCase())
+                      );
+                      setLivrosPesquisados(resultadoPesquisa);
+                  }
+              }}
              />
              {livrosPesquisados.map( livro => (
                 <Resultado>
